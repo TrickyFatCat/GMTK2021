@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
@@ -21,6 +22,9 @@ APlayerCharacter::APlayerCharacter()
 	PlayerCamera = CreateDefaultSubobject<UCameraComponent>("PlayerCamera");
 	PlayerCamera->SetupAttachment(SpringArm);
 	PlayerCamera->FieldOfView = 100.f;
+
+	GetCapsuleComponent()->SetCapsuleHalfHeight(40.f);
+	GetCapsuleComponent()->SetCapsuleRadius(15.f);
 }
 
 void APlayerCharacter::BeginPlay()
