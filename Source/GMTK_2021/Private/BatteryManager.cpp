@@ -9,13 +9,14 @@
 
 UBatteryManager::UBatteryManager()
 {
-	PrimaryComponentTick.bCanEverTick = false;;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
 void UBatteryManager::BeginPlay()
 {
 	Super::BeginPlay();
+	SpawnBattery();
 }
 
 void UBatteryManager::SetDecreaseRate(const float NewRate)
