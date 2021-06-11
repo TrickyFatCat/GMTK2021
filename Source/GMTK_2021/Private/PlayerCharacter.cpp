@@ -6,6 +6,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "BatteryManager.h"
+#include "Battery.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -32,6 +34,8 @@ APlayerCharacter::APlayerCharacter()
 	GetCapsuleComponent()->SetCapsuleRadius(15.f);
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	BatteryManager = CreateDefaultSubobject<UBatteryManager>("BatteryManager");
 }
 
 void APlayerCharacter::BeginPlay()

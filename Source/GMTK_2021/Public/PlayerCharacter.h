@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "BatteryManager.h"
 #include "GameFramework/Character.h"
-
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -37,4 +36,15 @@ private:
 private:
 	void MoveForward(const float AxisValue);
 	void MoveRight(const float AxisValue);
+
+	// Battery
+	public:
+	UFUNCTION(BlueprintPure, Category="Energy")
+	float GetEnergy() const { return BatteryManager->GetEnergy(); }
+	UFUNCTION(BlueprintCallable, Category="Battery")
+	ABattery* GetBattery() const { return BatteryManager->GetBatteryActor(); }
+	
+	private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
+	UBatteryManager* BatteryManager = nullptr;
 };
