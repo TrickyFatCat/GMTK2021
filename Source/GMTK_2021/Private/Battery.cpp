@@ -7,6 +7,8 @@
 ABattery::ABattery()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 }
 
 void ABattery::BeginPlay()
