@@ -22,14 +22,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-// Camera
-	private:
+	// Camera
+private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Component", meta=(AllowPrivateAccess="true"))
 	USpringArmComponent* SpringArm = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UCameraComponent* PlayerCamera = nullptr;
+
+	// Movement
+private:
+	void MoveForward(const float AxisValue);
+	void MoveRight(const float AxisValue);
 };

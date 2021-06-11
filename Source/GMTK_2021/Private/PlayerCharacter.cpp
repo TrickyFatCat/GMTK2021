@@ -4,11 +4,16 @@
 #include "PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	SpringArm->SetupAttachment(GetRootComponent());
@@ -25,6 +30,8 @@ APlayerCharacter::APlayerCharacter()
 
 	GetCapsuleComponent()->SetCapsuleHalfHeight(40.f);
 	GetCapsuleComponent()->SetCapsuleRadius(15.f);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 void APlayerCharacter::BeginPlay()
@@ -42,6 +49,33 @@ void APlayerCharacter::Tick(float DeltaTime)
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+}
 
+void APlayerCharacter::MoveForward(const float AxisValue)
+{
+	if (!IsValid(Controller)) return;
+
+	if (AxisValue != 0.f)
+	{
+		const FRotator ControllerRotation = Controller->GetControlRotation();
+		const FRotator NewYawRotation(0.f, ControllerRotation.Yaw, 0.f);
+		const FVector MoveDirection = FRotationMatrix(NewYawRotation).GetUnitAxis(EAxis::X);
+		AddMovementInput(MoveDirection, AxisValue);
+	}
+}
+
+void APlayerCharacter::MoveRight(const float AxisValue)
+{
+	if (!IsValid(Controller)) return;
+
+	if (AxisValue != 0.f)
+	{
+		const FRotator ControllerRotation = Controller->GetControlRotation();
+		const FRotator NewYawRotation(0.f, ControllerRotation.Yaw, 0.f);
+		const FVector MoveDirection = FRotationMatrix(NewYawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(MoveDirection, AxisValue);
+	}
 }
 
