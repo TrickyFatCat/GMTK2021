@@ -10,7 +10,7 @@ ADoor::ADoor()
 
 	AnimationTimeline = CreateDefaultSubobject<UTimelineComponent>("AnimationTimeline");
 	DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>("DoorFrame");
-	SetRootComponent(DoorFrame);
+	DoorFrame->SetupAttachment(GetRootComponent());
 }
 
 void ADoor::BeginPlay()
