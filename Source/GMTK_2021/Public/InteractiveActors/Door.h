@@ -46,6 +46,8 @@ public:
 
 	// Door objects
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
+	USceneComponent* DoorRoot = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components")
 	UStaticMeshComponent* DoorFrame = nullptr;
 	UPROPERTY(VisibleAnywhere, Category="Door")
