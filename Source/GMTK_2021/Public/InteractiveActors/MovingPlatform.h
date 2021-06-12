@@ -5,9 +5,15 @@
 #include "CoreMinimal.h"
 
 #include "Components/TimelineComponent.h"
-#include "Curves/CurveVector.h"
 #include "GameFramework/Actor.h"
 #include "MovingPlatform.generated.h"
+
+UENUM(BlueprintType)
+enum class EPlatformState : uint8
+{
+	Moving,
+	Idle
+};
 
 UCLASS()
 class GMTK_2021_API AMovingPlatform : public AActor
@@ -33,6 +39,8 @@ private:
 public:
 	UPROPERTY(EditAnywhere, Category="Platform")
 	TSet<AActor*> PathPoints;
+	UFUNCTION(BlueprintCallable, Category="Platform")
+	bool StartMoving();
 
 private:
 	FVector InitialLocation;
