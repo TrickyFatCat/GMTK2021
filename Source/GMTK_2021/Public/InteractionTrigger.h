@@ -18,7 +18,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+public:
+	void EnableTrigger();
+	void DisableTrigger();
+
 private:
+	bool bIsEnabled = true;
 	UFUNCTION()
 	void AddToInteractionQueue(
 		UPrimitiveComponent* OverlappedComponent,
