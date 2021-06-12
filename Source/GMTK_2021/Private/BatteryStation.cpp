@@ -19,6 +19,18 @@ ABatteryStation::ABatteryStation()
 void ABatteryStation::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (InitialState == EStationState::Active)
+	{
+		InitialState = EStationState::Inactive;
+	}
+	
+	CurrentState = InitialState;
+	
+	if (CurrentState == EStationState::Disabled)
+	{
+		DisableStation();
+	}
 }
 
 void ABatteryStation::Tick(float DeltaTime)
@@ -49,7 +61,7 @@ bool ABatteryStation::ProcessInteraction_Implementation(APlayerCharacter* Player
 
 bool ABatteryStation::DisableStation()
 {
-	if (CurrentState == EStationState::Disabled) return false;
+	if (CurrentState == EStationState::Disabled || CurrentState == EStationState::Active) return false;
 
 	CurrentState = EStationState::Disabled;
 	TriggerSphere->DisableTrigger();
