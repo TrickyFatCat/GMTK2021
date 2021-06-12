@@ -39,25 +39,43 @@ private:
 	void MoveRight(const float AxisValue);
 
 	// Battery
-	public:
+public:
 	UFUNCTION(BlueprintPure, Category="Energy")
 	float GetEnergy() const { return BatteryManager->GetEnergy(); }
+
+	UFUNCTION(BlueprintPure, Category="Energy")
+	float GetNormalizedEnergy() const { return BatteryManager->GetNormalizedEnergy(); }
+
+	UFUNCTION(BlueprintCallable, Category="Energy")
+	bool StartEnergyIncrease() const { return BatteryManager->StartEnergyIncrease(); }
+
+	UFUNCTION(BlueprintCallable, Category="Energy")
+	bool StopEnergyIncrease() const { return BatteryManager->StopEnergyIncrease(); }
+
+	UFUNCTION(BlueprintCallable, Category="Energy")
+	bool StartEnergyDecrease() const { return BatteryManager->StartEnergyDecrease(); }
+
+	UFUNCTION(BlueprintCallable, Category="Energy")
+	bool StopEnergyDecrease() const { return BatteryManager->StopEnergyDecrease(); }
+
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	ABattery* GetBattery() const { return BatteryManager->GetBatteryActor(); }
+
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	void UnequipBattery(USkeletalMeshComponent* TargetMesh) { BatteryManager->UnequipBattery(TargetMesh); }
+
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	void EquipBattery() const { BatteryManager->EquipBattery(); }
-	
-	private:
+
+private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UBatteryManager* BatteryManager = nullptr;
 
 	// Interaction
-	public:
+public:
 	void AddToInteractionQueue(AActor* Actor) { InteractionManager->AddToQueue(Actor); }
 	void RemoveFromInteractionQueue(AActor* Actor) { InteractionManager->RemoveFromQueue(Actor); }
-	private:
+private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UInteractionManager* InteractionManager = nullptr;
 	void Interact() { InteractionManager->Interact(); }
