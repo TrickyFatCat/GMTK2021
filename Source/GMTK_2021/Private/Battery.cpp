@@ -2,13 +2,19 @@
 
 
 #include "Battery.h"
+#include "EnergyTrigger.h"
 
 
 ABattery::ABattery()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	EnergyTrigger = CreateDefaultSubobject<UEnergyTrigger>("EnergyTrigger");
+	SetRootComponent(EnergyTrigger);
+	EnergyTrigger->DisableTrigger();
+	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	Mesh->SetupAttachment(GetRootComponent());
 }
 
 void ABattery::BeginPlay()
