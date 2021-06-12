@@ -18,12 +18,28 @@ void UInteractionTrigger::BeginPlay()
 	OnComponentEndOverlap.AddDynamic(this, &UInteractionTrigger::RemoveFromInteractionQueue);
 }
 
+void UInteractionTrigger::EnableTrigger()
+{
+	if (bIsEnabled) return;
+
+	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	bIsEnabled = true;
+}
+
+void UInteractionTrigger::DisableTrigger()
+{
+	if (!bIsEnabled) return;
+
+	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	bIsEnabled = false;
+}
+
 void UInteractionTrigger::AddToInteractionQueue(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult& SweepResult)
+                                                AActor* OtherActor,
+                                                UPrimitiveComponent* OtherComp,
+                                                int32 OtherBodyIndex,
+                                                bool bFromSweep,
+                                                const FHitResult& SweepResult)
 {
 	if (!IsValid(OtherActor) || !IsValid(GetOwner())) return;
 
