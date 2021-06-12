@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="Energy")
 	float GetEnergy() const { return BatteryManager->GetEnergy(); }
 
+	UFUNCTION(BlueprintPure, Category="Energy")
+	float GetNormalizedEnergy() const { return BatteryManager->GetNormalizedEnergy(); }
+
 	UFUNCTION(BlueprintCallable, Category="Energy")
 	bool StartEnergyIncrease() const { return BatteryManager->StartEnergyIncrease(); }
 
