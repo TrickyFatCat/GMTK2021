@@ -37,11 +37,46 @@ void AButtonBase::BeginPlay()
 	}
 
 	InitialTransform = BodyMesh->GetComponentTransform();
+
+	CurrentState = InitialState;
+	float StartProgress = 0.f;
+
+	switch (CurrentState)
+	{
+		case EButtonState::PositionA:
+		case EButtonState::Locked:
+			StartProgress = 0.f;
+		break;
+		case EButtonState::PositionB:
+			StartProgress = 1.f;
+		break;
+		case EButtonState::Transition:
+			FinishTransition();
+		break;
+	}
+
+	SetButtonBodyTransform(StartProgress);
 }
 
 void AButtonBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+bool AButtonBase::LockButton()
+{
+	if (IsCurrentState(EButtonState::Locked) || IsCurrentState(EButtonState::Transition) || IsCurrentState(EButtonState::Disabled) && bPressOnce) return false;
+	
+	ChangeState(EButtonState::Locked);
+	return true;
+}
+
+bool AButtonBase::UnlockButton()
+{
+	if (!IsCurrentState(EButtonState::Locked)) return false;
+
+	ChangeState(PreviousState);
+	return true;
 }
 
 bool AButtonBase::DisableButton()
@@ -55,7 +90,7 @@ bool AButtonBase::DisableButton()
 
 bool AButtonBase::ProcessInteraction_Implementation(APlayerCharacter* PlayerCharacter)
 {
-	if (!PlayerCharacter || IsCurrentState(EButtonState::Transition) || IsCurrentState(EButtonState::Disabled)) return false;
+	if (!PlayerCharacter ||  IsCurrentState(EButtonState::Disabled) || IsCurrentState(EButtonState::Locked) || IsCurrentState(EButtonState::Transition)) return false;
 
 	StartTransition();
 	

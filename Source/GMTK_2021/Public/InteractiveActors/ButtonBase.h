@@ -40,8 +40,12 @@ public:
 
 // Button controls
 public:
-	bool DisableButton();
+	UFUNCTION(BlueprintCallable, Category="Button")
+	bool LockButton();
+	UFUNCTION(BlueprintCallable, Category="Button")
+	bool UnlockButton();
 protected:
+	bool DisableButton();
 	virtual bool ProcessInteraction_Implementation(APlayerCharacter* PlayerCharacter) override;
 
 private:
