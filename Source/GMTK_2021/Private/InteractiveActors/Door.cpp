@@ -167,7 +167,8 @@ void ADoor::SetDoorTransform(const float Progress)
 		FTransform NewTransform = InitialTransforms[i];
 		FTransform TargetTransform = TargetTransforms[i];
 		NewTransform.SetLocation(NewTransform.GetLocation() + TargetTransform.GetLocation() * Progress);
-		NewTransform.SetRotation(NewTransform.GetRotation() + TargetTransform.GetRotation() * Progress);
+		FQuat NewRotation = FRotator(NewTransform.GetRotation().Rotator() + TargetTransform.GetRotation().Rotator() * Progress).Quaternion();
+		NewTransform.SetRotation(NewRotation);
 		DoorLeaves[i]->SetWorldTransform(NewTransform);
 	}
 }
