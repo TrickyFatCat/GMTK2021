@@ -14,7 +14,6 @@ ABattery::ABattery()
 void ABattery::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void ABattery::Tick(float DeltaTime)
