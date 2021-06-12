@@ -9,8 +9,10 @@ ADoor::ADoor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	AnimationTimeline = CreateDefaultSubobject<UTimelineComponent>("AnimationTimeline");
+	DoorRoot = CreateDefaultSubobject<USceneComponent>("DoorRoot");
+	SetRootComponent(DoorRoot);
 	DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>("DoorFrame");
-	SetRootComponent(DoorFrame);
+	DoorFrame->SetupAttachment(GetRootComponent());
 }
 
 void ADoor::BeginPlay()
