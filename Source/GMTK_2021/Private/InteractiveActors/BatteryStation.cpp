@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BatteryStation.h"
+#include "InteractiveActors/BatteryStation.h"
 #include "PlayerCharacter.h"
 #include "InteractionTrigger.h"
 #include "Components/SkeletalMeshComponent.h"
