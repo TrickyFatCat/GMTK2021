@@ -3,13 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "Interact.h"
 #include "GameFramework/Actor.h"
 #include "BatteryStation.generated.h"
 
 class USkeletalMeshComponent;
-class USphereComponent;
+class UInteractionTrigger;
+
+UENUM(BlueprintType)
+enum class EStationState : uint8
+{
+	Active,
+	Inactive,
+	Disabled
+};
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChangedSignature, EStationState, NewState);
 
 UCLASS()
 class GMTK_2021_API ABatteryStation : public AActor, public IInteract
@@ -17,15 +26,12 @@ class GMTK_2021_API ABatteryStation : public AActor, public IInteract
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ABatteryStation();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 protected:
@@ -33,7 +39,24 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
-	USphereComponent* TriggerSphere = nullptr;
+	UInteractionTrigger* TriggerSphere = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	USkeletalMeshComponent* SkeletalMesh = nullptr;
+
+	// States
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Battery")
+	EStationState InitialState = EStationState::Inactive;
+	UFUNCTION(BlueprintPure, Category="Battery")
+	EStationState GetCurrentState() const { return CurrentState; }
+	UPROPERTY(BlueprintAssignable, Category="Battery")
+	FOnStateChangedSignature OnStateChanged;
+
+	UFUNCTION(BlueprintCallable, Category="Battery")
+	bool DisableStation();
+	UFUNCTION(BlueprintCallable, Category="Battery")
+	bool EnableStation();
+
+private:
+	EStationState CurrentState = EStationState::Inactive;
 };
