@@ -52,8 +52,6 @@ void UEnergyTrigger::OnExitTrigger(UPrimitiveComponent* OverlappedComponent,
 {
 	if (!IsValid(OtherActor)) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("I'm in"));
-
 	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
 
 	if (!PlayerCharacter) return;
