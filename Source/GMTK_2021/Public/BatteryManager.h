@@ -28,8 +28,14 @@ public:
 	float GetNormalizedEnergy() const { return Energy / MaxEnergy; }
 	void SetDecreaseRate(const float NewRate);
 	void SetIncreaseRate(const float NewRate);
-	bool IncreaseEnergy(const float DeltaEnergy);
-	bool DecreaseEnergy(const float DeltaEnergy);
+	UFUNCTION()
+	void IncreaseEnergy(const float DeltaEnergy);
+	UFUNCTION()
+	void DecreaseEnergy(const float DeltaEnergy);
+	bool StartEnergyDecrease();
+	bool StopEnergyDecrease();
+	bool StartEnergyIncrease();
+	bool StopEnergyIncrease();
 	FOnEnergyChangedSignature OnEnergyChanged;
 
 private:
@@ -41,8 +47,14 @@ private:
 	float DecreaseRate = 1.f;
 	float DecreaseInterval = 1.f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
+	float DecreaseAmount = 1.f;
+	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
 	float IncreaseRate = 1.f;
 	float IncreaseInterval = 1.f;
+	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
+	float IncreaseAmount = 1.f;
+	FTimerHandle EnergyDecreaseHandle;
+	FTimerHandle EnergyIncreaseHandle;
 
 // Battery
 public:
