@@ -34,8 +34,7 @@ void AMovingPlatform::BeginPlay()
 			MovementFinished.BindUFunction(this, FName("FinishMovement"));
 			MovementTimeline->SetTimelineFinishedFunc(MovementFinished);
 			CalculatePlayRate();
-			InitialLocation = GetActorLocation();
-			MovementTimeline->PlayFromStart();
+			StartMoving();
 		}
 	}
 }
@@ -43,6 +42,13 @@ void AMovingPlatform::BeginPlay()
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+bool AMovingPlatform::StartMoving()
+{
+	InitialLocation = GetActorLocation();
+	MovementTimeline->PlayFromStart();
+	return true;
 }
 
 void AMovingPlatform::CalculatePlayRate() const
@@ -55,7 +61,6 @@ void AMovingPlatform::CalculatePlayRate() const
 void AMovingPlatform::SetPlatformLocation(const float PathProgress)
 {
 	const FVector NewLocation = FMath::Lerp(InitialLocation, PathLocations[0], PathProgress);
-	UE_LOG(LogTemp, Warning, TEXT("Path progress %f"), PathProgress);
 	SetActorLocation(NewLocation);
 }
 
