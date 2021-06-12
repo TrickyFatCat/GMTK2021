@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "BatteryManager.h"
 #include "Battery.h"
+#include "InteractionManager.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -36,6 +37,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
 	BatteryManager = CreateDefaultSubobject<UBatteryManager>("BatteryManager");
+	InteractionManager = CreateDefaultSubobject<UInteractionManager>("InteractionManager");
 }
 
 void APlayerCharacter::BeginPlay()
@@ -55,6 +57,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)
