@@ -17,6 +17,7 @@ void UEnergyTrigger::EnableTrigger()
 	
 	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	bIsEnabled = true;
+	OnChangeState.Broadcast(bIsEnabled);
 	SetHiddenInGame(false);
 }
 
@@ -26,6 +27,7 @@ void UEnergyTrigger::DisableTrigger()
 	
 	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	bIsEnabled = false;
+	OnChangeState.Broadcast(bIsEnabled);
 	SetHiddenInGame(true);
 }
 

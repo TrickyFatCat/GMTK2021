@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "EnergyTrigger.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeStateSignature, bool, IsEnabled);
 /**
  * 
  */
@@ -19,10 +20,14 @@ protected:
 public:
 	UFUNCTION(BlueprintPure, Category="Energy")
 	bool GetIsIncreasingEnergy() const { return bIsIncreasingEnergy; }
+	UFUNCTION(BlueprintCallable, Category="Energy")
 	void EnableTrigger();
+	UFUNCTION(BlueprintCallable, Category="Energy")
 	void DisableTrigger();
 	UFUNCTION(BlueprintPure)
 	bool GetIsEnabled() const { return bIsEnabled; }
+	UPROPERTY(BlueprintAssignable, Category="Energy")
+	FOnChangeStateSignature OnChangeState;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Energy", meta=(AllowPrivateAccess="true"))
