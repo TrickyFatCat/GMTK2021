@@ -37,13 +37,16 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Movement", meta=(AllowPrivateAccess="true"))
 	UCurveFloat* MovementCurve;
 public:
-	UPROPERTY(EditAnywhere, Category="Platform")
+	UPROPERTY(EditAnywhere, Category="Platform", EditFixedSize="2")
 	TSet<AActor*> PathPoints;
 	UFUNCTION(BlueprintCallable, Category="Platform")
 	bool StartMoving();
 
 private:
 	FVector InitialLocation;
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentPointIndex = 0;
+	UPROPERTY(VisibleAnywhere)
 	TArray<FVector> PathLocations;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Movement", meta=(AllowPrivateAccess="true", ClampMin = "0.0"))
 	float TravelTime = 3.f;
