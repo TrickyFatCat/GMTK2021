@@ -45,7 +45,7 @@ private:
 
 	// States
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Battery")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Battery")
 	EStationState InitialState = EStationState::Inactive;
 	UFUNCTION(BlueprintPure, Category="Battery")
 	EStationState GetCurrentState() const { return CurrentState; }
