@@ -22,8 +22,14 @@ void AMovingPlatform::BeginPlay()
 	{
 		for (const auto Actor : PathPoints)
 		{
+			if (!Actor) continue;
 			PathLocations.Add(Actor->GetActorLocation());
 		}
+	}
+
+	if (PathLocations.Num() == 2)
+	{
+		SetActorLocation(PathLocations[CurrentPointIndex]);
 
 		if (MovementCurve)
 		{
@@ -34,7 +40,6 @@ void AMovingPlatform::BeginPlay()
 			MovementFinished.BindUFunction(this, FName("FinishMovement"));
 			MovementTimeline->SetTimelineFinishedFunc(MovementFinished);
 			CalculatePlayRate();
-			StartMoving();
 		}
 	}
 }
@@ -46,6 +51,8 @@ void AMovingPlatform::Tick(float DeltaTime)
 
 bool AMovingPlatform::StartMoving()
 {
+	if (PathLocations.Num() < 2) return false;
+	
 	InitialLocation = GetActorLocation();
 	MovementTimeline->PlayFromStart();
 	return true;
@@ -60,11 +67,12 @@ void AMovingPlatform::CalculatePlayRate() const
 
 void AMovingPlatform::SetPlatformLocation(const float PathProgress)
 {
-	const FVector NewLocation = FMath::Lerp(InitialLocation, PathLocations[0], PathProgress);
+	const int32 TargetPointIndex = CurrentPointIndex == 0 ? 1 : 0;
+	const FVector NewLocation = FMath::Lerp(InitialLocation, PathLocations[TargetPointIndex], PathProgress);
 	SetActorLocation(NewLocation);
 }
 
 void AMovingPlatform::FinishMovement()
 {
-	UE_LOG(LogTemp, Error, TEXT("Movement Finished"));
+	CurrentPointIndex++;
 }
