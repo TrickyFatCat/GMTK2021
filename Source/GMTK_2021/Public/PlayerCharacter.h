@@ -35,6 +35,10 @@ private:
 
 	// Movement
 private:
+	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	float Acceleration = 8.f;
+	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	float MaxSpeed = 400.f;
 	void MoveForward(const float AxisValue);
 	void MoveRight(const float AxisValue);
 	void SetInputEnabled(const bool bIsEnabled);

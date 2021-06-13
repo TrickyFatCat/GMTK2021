@@ -79,6 +79,14 @@ void APlayerCharacter::MoveForward(const float AxisValue)
 		const FVector MoveDirection = FRotationMatrix(NewYawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(MoveDirection, AxisValue);
 	}
+	
+	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
+
+	if (MovementComponent)
+	{
+		const float Speed = MovementComponent->Velocity.Size();
+		MovementComponent->MaxWalkSpeed = FMath::Min(Speed + Acceleration, MaxSpeed);
+	}
 }
 
 void APlayerCharacter::MoveRight(const float AxisValue)
@@ -120,15 +128,17 @@ void APlayerCharacter::OnDeath()
 void APlayerCharacter::StartInteraction()
 {
 	if (InteractionManager->IsQueueEmpty()) return;
-	
+
 	AActor* TargetActor = InteractionManager->GetTargetActor();
 
 	if (!IsValid(TargetActor)) return;
 
-	UAnimMontage* TargetMontage = TargetActor->IsA(ABatteryStation::StaticClass()) ? GroundInteractionMontage : StandInteractionMontage;
+	UAnimMontage* TargetMontage = TargetActor->IsA(ABatteryStation::StaticClass())
+		                              ? GroundInteractionMontage
+		                              : StandInteractionMontage;
 
 	if (!TargetMontage) return;
-	
+
 	SetInputEnabled(false);
 	PlayAnimMontage(TargetMontage);
 }
