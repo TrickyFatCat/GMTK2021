@@ -71,6 +71,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Button")
 	FOnButtonChangedStateSignature OnChangeState;
+	UFUNCTION(BlueprintImplementableEvent, Category="Button")
+	void OnStateChanged(EButtonState NewState);
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Button")
@@ -101,4 +103,10 @@ protected:
 	virtual void FinishTransition();
 	UFUNCTION()
 	void SetButtonBodyTransform(const float Progress);
+
+	// Sound
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundBase* ButtonSoundStart;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sound")
+	USoundBase* ButtonSoundStop;
 };

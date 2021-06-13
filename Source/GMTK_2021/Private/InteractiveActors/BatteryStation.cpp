@@ -5,6 +5,7 @@
 #include "PlayerCharacter.h"
 #include "InteractionTrigger.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 ABatteryStation::ABatteryStation()
@@ -47,11 +48,25 @@ bool ABatteryStation::ProcessInteraction_Implementation(APlayerCharacter* Player
 	case EStationState::Inactive:
 		PlayerCharacter->UnequipBattery(SkeletalMesh);
 		CurrentState = EStationState::Active;
+
+		if (ActivationSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, ActivationSound, GetActorLocation());
+		}
+
+		OnChangedState(CurrentState);
 		OnStateChanged.Broadcast(CurrentState);
 		break;
 	case EStationState::Active:
 		PlayerCharacter->EquipBattery();
 		CurrentState = EStationState::Inactive;
+
+		if (DeactivationSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, DeactivationSound, GetActorLocation());
+		}
+
+		OnChangedState(CurrentState);
 		OnStateChanged.Broadcast(CurrentState);
 		break;
 	}
@@ -65,6 +80,7 @@ bool ABatteryStation::DisableStation()
 
 	CurrentState = EStationState::Disabled;
 	TriggerSphere->DisableTrigger();
+	OnChangedState(CurrentState);
 	OnStateChanged.Broadcast(CurrentState);
 	return true;
 }
@@ -75,6 +91,7 @@ bool ABatteryStation::EnableStation()
 
 	CurrentState = EStationState::Inactive;
 	TriggerSphere->EnableTrigger();
+	OnChangedState(CurrentState);
 	OnStateChanged.Broadcast(CurrentState);
 	return true;
 }

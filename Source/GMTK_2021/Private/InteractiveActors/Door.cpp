@@ -2,7 +2,7 @@
 
 
 #include "InteractiveActors/Door.h"
-
+#include "Kismet/GameplayStatics.h"
 
 ADoor::ADoor()
 {
@@ -122,6 +122,7 @@ void ADoor::ChangeState(const EDoorState NewState)
 	PreviousState = CurrentState;
 	CurrentState = NewState;
 	OnChangeState.Broadcast(NewState, PreviousState);
+	OnStateChanged(NewState);
 }
 
 void ADoor::SetTargetState()
@@ -139,6 +140,11 @@ void ADoor::CalculatePlayRate() const
 void ADoor::StartTransition()
 {
 	SetTargetState();
+
+	if (DoorSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DoorSound, GetActorLocation());
+	}
 
 	switch (TargetState)
 	{

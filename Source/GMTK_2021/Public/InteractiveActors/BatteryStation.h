@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Interact.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundCue.h"
+
 #include "BatteryStation.generated.h"
 
 class USkeletalMeshComponent;
@@ -51,6 +53,8 @@ public:
 	EStationState GetCurrentState() const { return CurrentState; }
 	UPROPERTY(BlueprintAssignable, Category="Battery")
 	FOnStateChangedSignature OnStateChanged;
+	UFUNCTION(BlueprintImplementableEvent, Category="Battery")
+	void OnChangedState(EStationState NewState);
 
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	bool DisableStation();
@@ -60,4 +64,11 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere)
 	EStationState CurrentState = EStationState::Inactive;
+
+	// Sounds
+protected:
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundBase* ActivationSound;
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundBase* DeactivationSound;
 };

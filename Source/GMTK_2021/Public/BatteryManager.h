@@ -80,4 +80,6 @@ private:
 
 	void SpawnBattery();
 	void AttachBatteryToSocket(USkeletalMeshComponent* SkeletalMesh, const FName SocketName);
+
+	
 };

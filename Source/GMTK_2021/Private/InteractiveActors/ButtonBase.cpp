@@ -3,7 +3,7 @@
 
 #include "InteractiveActors/ButtonBase.h"
 #include "Components/TimelineComponent.h"
-
+#include "Kismet/GameplayStatics.h"
 
 AButtonBase::AButtonBase()
 {
@@ -104,6 +104,7 @@ void AButtonBase::ChangeState(const EButtonState NewState)
 	PreviousState = CurrentState;
 	CurrentState = NewState;
 	OnChangeState.Broadcast(CurrentState, PreviousState);
+	OnStateChanged(CurrentState);
 }
 
 void AButtonBase::SetTargetState()
@@ -123,6 +124,10 @@ void AButtonBase::StartTransition()
 {
 	SetTargetState();
 
+	if (ButtonSoundStart)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ButtonSoundStart, GetActorLocation());
+	}
 	switch (TargetState)
 	{
 		case EButtonState::PositionB:
@@ -139,6 +144,11 @@ void AButtonBase::StartTransition()
 void AButtonBase::FinishTransition()
 {
 	ChangeState(TargetState);
+
+	if (ButtonSoundStop)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ButtonSoundStop, GetActorLocation());
+	}
 
 	if (bPressOnce)
 	{

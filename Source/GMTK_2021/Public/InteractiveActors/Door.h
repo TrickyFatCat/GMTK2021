@@ -6,6 +6,8 @@
 
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
+#include "Sound/SoundCue.h"
+
 #include "Door.generated.h"
 
 UENUM(BlueprintType)
@@ -68,6 +70,8 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Door")
 	FOnDoorChangedStateSignature OnChangeState;
+	UFUNCTION(BlueprintImplementableEvent, Category="Door")
+	void OnStateChanged(EDoorState NewState);
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Door")
 	EDoorState InitialState = EDoorState::Locked;
@@ -95,4 +99,8 @@ protected:
 	void FinishTransition();
 	UFUNCTION()
 	void SetDoorTransform(const float Progress);
+
+	// Sound
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundBase* DoorSound = nullptr;
 };
