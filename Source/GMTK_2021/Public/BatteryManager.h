@@ -51,7 +51,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
 	float DecreaseAmount = 1.f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
-	float IncreaseRate = 1.f;
+	float IncreaseRate = 20.f;
 	float IncreaseInterval = 1.f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
 	float IncreaseAmount = 1.f;
@@ -67,7 +67,12 @@ public:
 	
 	void EquipBattery();
 	void UnequipBattery(USkeletalMeshComponent* SkeletalMesh);
+
+	UFUNCTION(BlueprintPure, Category="Battery")
+	bool GetIsBatteryEquipped() const { return bIsBatteryEquipped; }
 private:
+	UPROPERTY(VisibleAnywhere, Category="Battery")
+	bool bIsBatteryEquipped = true;
 	UPROPERTY(EditDefaultsOnly, Category="Battery")
 	FName BatterySocketName = "BatterySocket";
 	UPROPERTY()
