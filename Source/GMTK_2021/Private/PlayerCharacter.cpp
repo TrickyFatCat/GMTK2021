@@ -44,12 +44,12 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	BatteryManager->OnDeath.AddUObject(this, &APlayerCharacter::OnDeath);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -86,3 +86,15 @@ void APlayerCharacter::MoveRight(const float AxisValue)
 	}
 }
 
+void APlayerCharacter::OnDeath()
+{
+	GetCharacterMovement()->DisableMovement();
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController)
+	{
+		DisableInput(PlayerController);
+	}
+
+	PlayAnimMontage(DeathMontage);
+}
