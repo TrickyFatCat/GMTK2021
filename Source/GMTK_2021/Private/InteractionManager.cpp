@@ -48,3 +48,15 @@ bool UInteractionManager::Interact()
 
 	return IInteract::Execute_ProcessInteraction(TargetActor, Cast<APlayerCharacter>(GetOwner()));
 }
+
+AActor* UInteractionManager::GetTargetActor() const
+{
+	AActor* TargetActor = InteractionQueue[0];
+
+	while (!IsValid(TargetActor))
+	{
+		TargetActor = InteractionQueue[0];
+	}
+
+	return TargetActor;
+}
