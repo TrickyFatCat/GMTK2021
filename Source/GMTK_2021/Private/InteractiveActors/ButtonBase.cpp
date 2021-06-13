@@ -36,7 +36,7 @@ void AButtonBase::BeginPlay()
 		CalculatePlayRate();
 	}
 
-	InitialTransform = BodyMesh->GetComponentTransform();
+	InitialTransform = BodyMesh->GetRelativeTransform();
 
 	CurrentState = InitialState;
 	float StartProgress = 0.f;
@@ -152,5 +152,5 @@ void AButtonBase::SetButtonBodyTransform(const float Progress)
 	NewTransform.SetLocation(NewTransform.GetLocation() + TargetTransform.GetLocation() * Progress);
 	const FQuat NewRotation = FRotator(NewTransform.GetRotation().Rotator() + TargetTransform.GetRotation().Rotator() * Progress).Quaternion();
 	NewTransform.SetRotation(NewRotation);
-	BodyMesh->SetWorldTransform(NewTransform);
+	BodyMesh->SetRelativeTransform(NewTransform);
 }

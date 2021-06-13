@@ -22,6 +22,8 @@ public:
 	void AddToQueue(AActor* InteractiveActor);
 	void RemoveFromQueue(AActor* InteractiveActor);
 	bool Interact();
+	bool IsQueueEmpty() const { return InteractionQueue.Num() <= 0; }
+	AActor* GetTargetActor() const;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="Interaction")

@@ -18,6 +18,7 @@ void UBatteryManager::BeginPlay()
 	Super::BeginPlay();
 	SpawnBattery();
 	Energy = MaxEnergy;
+	CalculateIntervals();
 	OnEnergyChanged.Broadcast(Energy, 0.f);
 }
 
@@ -39,7 +40,7 @@ void UBatteryManager::SetIncreaseRate(const float NewRate)
 
 void UBatteryManager::IncreaseEnergy(const float DeltaEnergy)
 {
-	if (DeltaEnergy <= 0.f) return;
+	if (DeltaEnergy <= 0.f || Energy >= MaxEnergy) return;
 
 	Energy = FMath::Min(Energy + DeltaEnergy, MaxEnergy);
 	OnEnergyChanged.Broadcast(Energy, DeltaEnergy);
@@ -52,7 +53,7 @@ void UBatteryManager::IncreaseEnergy(const float DeltaEnergy)
 
 void UBatteryManager::DecreaseEnergy(const float DeltaEnergy)
 {
-	if (DeltaEnergy <= 0.f) return;
+	if (DeltaEnergy <= 0.f || Energy <= 0.f) return;
 
 	Energy = FMath::Max(Energy - DeltaEnergy, 0.f);
 	OnEnergyChanged.Broadcast(Energy, -DeltaEnergy);
@@ -60,12 +61,13 @@ void UBatteryManager::DecreaseEnergy(const float DeltaEnergy)
 	if (Energy <= 0.f)
 	{
 		StopEnergyDecrease();
+		OnDeath.Broadcast();
 	}
 }
 
 bool UBatteryManager::StartEnergyDecrease()
 {
-	if (!GetWorld()) return false;
+	if (!GetWorld() || Energy <= 0.f || bIsBatteryEquipped) return false;
 
 	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 
@@ -96,7 +98,7 @@ bool UBatteryManager::StopEnergyDecrease()
 
 bool UBatteryManager::StartEnergyIncrease()
 {
-	if (!GetWorld()) return false;
+	if (!GetWorld() || Energy >= MaxEnergy) return false;
 
 	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 
@@ -137,14 +139,23 @@ void UBatteryManager::SpawnBattery()
 	AttachBatteryToSocket(Cast<ACharacter>(GetOwner())->GetMesh(), BatterySocketName);
 }
 
+void UBatteryManager::CalculateIntervals()
+{
+	DecreaseInterval = 1 / DecreaseRate;
+	IncreaseInterval = 1 / IncreaseRate;
+}
+
 void UBatteryManager::EquipBattery()
 {
+	bIsBatteryEquipped = true;
 	AttachBatteryToSocket(Cast<ACharacter>(GetOwner())->GetMesh(), BatterySocketName);
 	BatteryActor->DisableEnergyTrigger();
+	StartEnergyIncrease();
 }
 
 void UBatteryManager::UnequipBattery(USkeletalMeshComponent* SkeletalMesh)
 {
+	bIsBatteryEquipped = false;
 	AttachBatteryToSocket(SkeletalMesh, BatterySocketName);
 	BatteryActor->EnableEnergyTrigger();
 }
