@@ -6,6 +6,7 @@
 
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
+#include "Containers/Set.h"
 #include "MovingPlatform.generated.h"
 
 UENUM(BlueprintType)
@@ -37,8 +38,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Movement", meta=(AllowPrivateAccess="true"))
 	UCurveFloat* MovementCurve;
 public:
-	UPROPERTY(EditAnywhere, Category="Platform", EditFixedSize="2")
-	TSet<AActor*> PathPoints;
+	UPROPERTY(EditAnywhere, Category="Platform")
+	TSet<AActor*> TargetPoints;
 	UFUNCTION(BlueprintCallable, Category="Platform")
 	bool StartMoving();
 

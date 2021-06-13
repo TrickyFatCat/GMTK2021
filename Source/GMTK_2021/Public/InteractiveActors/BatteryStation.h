@@ -58,5 +58,6 @@ public:
 	bool EnableStation();
 
 private:
+	UPROPERTY(VisibleAnywhere)
 	EStationState CurrentState = EStationState::Inactive;
 };

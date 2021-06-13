@@ -35,13 +35,21 @@ private:
 
 	// Movement
 private:
+	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	float Acceleration = 8.f;
+	UPROPERTY(EditDefaultsOnly, Category="Movement")
+	float MaxSpeed = 400.f;
 	void MoveForward(const float AxisValue);
 	void MoveRight(const float AxisValue);
+	void SetInputEnabled(const bool bIsEnabled);
 
 	// Battery
 public:
 	UFUNCTION(BlueprintPure, Category="Energy")
 	float GetEnergy() const { return BatteryManager->GetEnergy(); }
+
+	UFUNCTION(BlueprintPure, Category="Player")
+	bool IsDead() const { return GetEnergy() <= 0.f; }
 
 	UFUNCTION(BlueprintPure, Category="Energy")
 	float GetNormalizedEnergy() const { return BatteryManager->GetNormalizedEnergy(); }
@@ -70,6 +78,7 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UBatteryManager* BatteryManager = nullptr;
+	void OnDeath();
 
 	// Interaction
 public:
@@ -78,5 +87,16 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UInteractionManager* InteractionManager = nullptr;
-	void Interact() { InteractionManager->Interact(); }
+	void StartInteraction();
+	void FinishInteraction(); 
+
+	// Animations
+protected:
+	UPROPERTY(EditDefaultsOnly, Category="Animation")
+	UAnimMontage* DeathMontage = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category="Animation")
+	UAnimMontage* StandInteractionMontage = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category="Animation")
+	UAnimMontage* GroundInteractionMontage = nullptr;
+	void InitAnimations();
 };
