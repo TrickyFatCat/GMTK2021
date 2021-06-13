@@ -24,12 +24,12 @@ void ABatteryStation::BeginPlay()
 	{
 		InitialState = EStationState::Inactive;
 	}
-	
+
 	CurrentState = InitialState;
-	
+
 	if (CurrentState == EStationState::Disabled)
 	{
-		DisableStation();
+		TriggerSphere->DisableTrigger();
 	}
 }
 
