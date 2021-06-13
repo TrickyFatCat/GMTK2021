@@ -23,6 +23,7 @@ public:
 	void DisableTrigger();
 
 private:
+	UPROPERTY(VisibleAnywhere)
 	bool bIsEnabled = true;
 	UFUNCTION()
 	void AddToInteractionQueue(

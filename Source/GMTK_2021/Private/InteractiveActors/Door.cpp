@@ -40,7 +40,7 @@ void ADoor::BeginPlay()
 		if (DoorLeaf)
 		{
 			DoorLeaves.Add(DoorLeaf);
-			InitialTransforms.Add(DoorLeaf->GetComponentTransform());
+			InitialTransforms.Add(DoorLeaf->GetRelativeTransform());
 		}
 	}
 
@@ -171,6 +171,6 @@ void ADoor::SetDoorTransform(const float Progress)
 		NewTransform.SetLocation(NewTransform.GetLocation() + TargetTransform.GetLocation() * Progress);
 		FQuat NewRotation = FRotator(NewTransform.GetRotation().Rotator() + TargetTransform.GetRotation().Rotator() * Progress).Quaternion();
 		NewTransform.SetRotation(NewRotation);
-		DoorLeaves[i]->SetWorldTransform(NewTransform);
+		DoorLeaves[i]->SetRelativeTransform(NewTransform);
 	}
 }

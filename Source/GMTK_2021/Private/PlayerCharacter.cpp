@@ -9,6 +9,9 @@
 #include "BatteryManager.h"
 #include "Battery.h"
 #include "InteractionManager.h"
+#include "InteractNotify.h"
+#include "InteractiveActors/BatteryStation.h"
+#include "GMTK_2021/Public/Utils.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -43,13 +46,18 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	BatteryManager->OnDeath.AddUObject(this, &APlayerCharacter::OnDeath);
+
+	if (GroundInteractionMontage && StandInteractionMontage)
+	{
+		InitAnimations();
+	}
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -57,7 +65,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerCharacter::MoveRight);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::Interact);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::StartInteraction);
 }
 
 void APlayerCharacter::MoveForward(const float AxisValue)
@@ -70,6 +78,14 @@ void APlayerCharacter::MoveForward(const float AxisValue)
 		const FRotator NewYawRotation(0.f, ControllerRotation.Yaw, 0.f);
 		const FVector MoveDirection = FRotationMatrix(NewYawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(MoveDirection, AxisValue);
+	}
+	
+	UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
+
+	if (MovementComponent)
+	{
+		const float Speed = MovementComponent->Velocity.Size();
+		MovementComponent->MaxWalkSpeed = FMath::Min(Speed + Acceleration, MaxSpeed);
 	}
 }
 
@@ -86,3 +102,66 @@ void APlayerCharacter::MoveRight(const float AxisValue)
 	}
 }
 
+void APlayerCharacter::SetInputEnabled(const bool bIsEnabled)
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (!PlayerController) return;
+
+	if (bIsEnabled)
+	{
+		EnableInput(PlayerController);
+	}
+	else
+	{
+		DisableInput(PlayerController);
+	}
+}
+
+void APlayerCharacter::OnDeath()
+{
+	GetCharacterMovement()->DisableMovement();
+	SetInputEnabled(false);
+	PlayAnimMontage(DeathMontage);
+}
+
+void APlayerCharacter::StartInteraction()
+{
+	if (InteractionManager->IsQueueEmpty()) return;
+
+	AActor* TargetActor = InteractionManager->GetTargetActor();
+
+	if (!IsValid(TargetActor)) return;
+
+	UAnimMontage* TargetMontage = TargetActor->IsA(ABatteryStation::StaticClass())
+		                              ? GroundInteractionMontage
+		                              : StandInteractionMontage;
+
+	if (!TargetMontage) return;
+
+	SetInputEnabled(false);
+	PlayAnimMontage(TargetMontage);
+}
+
+void APlayerCharacter::FinishInteraction()
+{
+	SetInputEnabled(true);
+	InteractionManager->Interact();
+}
+
+void APlayerCharacter::InitAnimations()
+{
+	UInteractNotify* InteractNotify = Utils::FindFirstNotifyByClass<UInteractNotify>(GroundInteractionMontage);
+
+	if (InteractNotify)
+	{
+		InteractNotify->OnNotified.AddUObject(this, &APlayerCharacter::FinishInteraction);
+	}
+
+	InteractNotify = Utils::FindFirstNotifyByClass<UInteractNotify>(StandInteractionMontage);
+
+	if (InteractNotify)
+	{
+		InteractNotify->OnNotified.AddUObject(this, &APlayerCharacter::FinishInteraction);
+	}
+}
