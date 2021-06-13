@@ -46,10 +46,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
 	float MaxEnergy = 100.f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
-	float DecreaseRate = 10.f;
+	float DecreaseRate = 8.f;
 	float DecreaseInterval = 1.f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
-	float DecreaseAmount = 1.f;
+	float DecreaseAmount = 0.5f;
 	UPROPERTY(EditDefaultsOnly, Category="Energy", meta=(AllowPrivateAccess="true", ClampMin="0.0"))
 	float IncreaseRate = 20.f;
 	float IncreaseInterval = 1.f;

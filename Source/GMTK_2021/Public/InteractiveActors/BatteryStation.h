@@ -29,6 +29,7 @@ class GMTK_2021_API ABatteryStation : public AActor, public IInteract
 
 public:
 	ABatteryStation();
+	bool IsInactive() const {return CurrentState == EStationState::Inactive || CurrentState == EStationState::Disabled; }
 
 protected:
 	virtual void BeginPlay() override;

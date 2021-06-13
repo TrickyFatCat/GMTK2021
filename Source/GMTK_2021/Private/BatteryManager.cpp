@@ -155,6 +155,7 @@ void UBatteryManager::EquipBattery()
 
 void UBatteryManager::UnequipBattery(USkeletalMeshComponent* SkeletalMesh)
 {
+	if (!bIsBatteryEquipped) return;
 	bIsBatteryEquipped = false;
 	AttachBatteryToSocket(SkeletalMesh, BatterySocketName);
 	BatteryActor->EnableEnergyTrigger();

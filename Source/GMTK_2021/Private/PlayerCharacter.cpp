@@ -68,6 +68,12 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &APlayerCharacter::StartInteraction);
 }
 
+void APlayerCharacter::OnWin()
+{
+	SetInputEnabled(false);
+	OnPlayerWin.Broadcast();
+}
+
 void APlayerCharacter::MoveForward(const float AxisValue)
 {
 	if (!IsValid(Controller)) return;
@@ -123,6 +129,7 @@ void APlayerCharacter::OnDeath()
 	GetCharacterMovement()->DisableMovement();
 	SetInputEnabled(false);
 	PlayAnimMontage(DeathMontage);
+	OnPlayerDeath.Broadcast();
 }
 
 void APlayerCharacter::StartInteraction()
@@ -136,6 +143,8 @@ void APlayerCharacter::StartInteraction()
 	UAnimMontage* TargetMontage = TargetActor->IsA(ABatteryStation::StaticClass())
 		                              ? GroundInteractionMontage
 		                              : StandInteractionMontage;
+
+	if (TargetActor->IsA(ABatteryStation::StaticClass()) && Cast<ABatteryStation>(TargetActor)->IsInactive() && !BatteryManager->GetIsBatteryEquipped()) return;
 
 	if (!TargetMontage) return;
 

@@ -11,6 +11,9 @@
 class USpringArmComponent;
 class UCameraComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeathSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerWinSignature);
+
 UCLASS()
 class GMTK_2021_API APlayerCharacter : public ACharacter
 {
@@ -25,6 +28,12 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerDeathSignature OnPlayerDeath;
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerWinSignature OnPlayerWin;
+	UFUNCTION(BlueprintCallable)
+	void OnWin();
 
 	// Camera
 private:
