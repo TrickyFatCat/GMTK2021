@@ -20,12 +20,17 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
-	void EnableEnergyTrigger() const { EnergyTrigger->EnableTrigger(); }
-	void DisableEnergyTrigger() const { EnergyTrigger->DisableTrigger(); }
+	void EnableEnergyTrigger(); 
+	void DisableEnergyTrigger();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnTriggerChangedState(const bool bIsEnabled);
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UEnergyTrigger* EnergyTrigger = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UStaticMeshComponent* Mesh = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
+	UStaticMeshComponent* ZoneMesh = nullptr;
 };
