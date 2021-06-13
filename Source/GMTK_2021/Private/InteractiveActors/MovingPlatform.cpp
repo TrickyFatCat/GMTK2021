@@ -18,9 +18,9 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (PathPoints.Num() > 0)
+	if (TargetPoints.Num() == 2)
 	{
-		for (const auto Actor : PathPoints)
+		for (const auto Actor : TargetPoints)
 		{
 			if (!Actor) continue;
 			PathLocations.Add(Actor->GetActorLocation());
@@ -51,7 +51,7 @@ void AMovingPlatform::Tick(float DeltaTime)
 
 bool AMovingPlatform::StartMoving()
 {
-	if (PathLocations.Num() < 2) return false;
+	if (PathLocations.Num() < 2 || PathLocations.Num() > 2) return false;
 	
 	InitialLocation = GetActorLocation();
 	MovementTimeline->PlayFromStart();
