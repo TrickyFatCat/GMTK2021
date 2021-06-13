@@ -67,7 +67,7 @@ void UBatteryManager::DecreaseEnergy(const float DeltaEnergy)
 
 bool UBatteryManager::StartEnergyDecrease()
 {
-	if (!GetWorld() || Energy <= 0.f) return false;
+	if (!GetWorld() || Energy <= 0.f || bIsBatteryEquipped) return false;
 
 	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 
@@ -147,12 +147,15 @@ void UBatteryManager::CalculateIntervals()
 
 void UBatteryManager::EquipBattery()
 {
+	bIsBatteryEquipped = true;
 	AttachBatteryToSocket(Cast<ACharacter>(GetOwner())->GetMesh(), BatterySocketName);
 	BatteryActor->DisableEnergyTrigger();
+	StartEnergyIncrease();
 }
 
 void UBatteryManager::UnequipBattery(USkeletalMeshComponent* SkeletalMesh)
 {
+	bIsBatteryEquipped = false;
 	AttachBatteryToSocket(SkeletalMesh, BatterySocketName);
 	BatteryActor->EnableEnergyTrigger();
 }
