@@ -37,6 +37,7 @@ private:
 private:
 	void MoveForward(const float AxisValue);
 	void MoveRight(const float AxisValue);
+	void SetInputEnabled(const bool bIsEnabled);
 
 	// Battery
 public:
@@ -82,10 +83,16 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UInteractionManager* InteractionManager = nullptr;
-	void Interact() { InteractionManager->Interact(); }
+	void StartInteraction();
+	void FinishInteraction(); 
 
 	// Animations
 protected:
 	UPROPERTY(EditDefaultsOnly, Category="Animation")
 	UAnimMontage* DeathMontage = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category="Animation")
+	UAnimMontage* StandInteractionMontage = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category="Animation")
+	UAnimMontage* GroundInteractionMontage = nullptr;
+	void InitAnimations();
 };
