@@ -93,8 +93,18 @@ void AEnergyZone::ChangeState(const EZoneState NewState)
 	OnChangeState.Broadcast(NewState);
 }
 
+void AEnergyZone::SetAnimationDuration(const float NewDuration)
+{
+	if (NewDuration <= 0.f) return;
+	
+	AnimationDuration = NewDuration;
+	CalculatePlayRate();
+}
+
 void AEnergyZone::CalculatePlayRate() const
 {
+	if (AnimationDuration <= 0.f) return;
+	
 	AnimationTimeline->SetPlayRate(1 / AnimationDuration);
 }
 
