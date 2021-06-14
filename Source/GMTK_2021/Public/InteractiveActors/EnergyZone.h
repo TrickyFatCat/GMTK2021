@@ -70,11 +70,15 @@ private:
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
 	UCurveFloat* AnimationCurve = nullptr;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
-	float AnimationDuration = 0.25f;
+	UFUNCTION(BlueprintGetter)
+	float GetAnimationDuration() const { return AnimationDuration; }
+	UFUNCTION(BlueprintSetter)
+	void SetAnimationDuration(const float NewDuration);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Animation", meta=(AllowPrivateAccess="true"))
 	FVector TargetScale = FVector(1.f, 1.f, 1.f);
 private:
+	UPROPERTY(EditDefaultsOnly, BlueprintGetter=GetAnimationDuration, BlueprintSetter=SetAnimationDuration, Category="Animation", meta=(AllowPrivateAccess="true"))
+	float AnimationDuration = 0.25f;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Animation", meta=(AllowPrivateAccess="true"))
 	FVector InitialScale = FVector::ZeroVector;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Animation", meta=(AllowPrivateAccess="true"))
