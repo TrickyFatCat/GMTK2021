@@ -48,7 +48,7 @@ void AButtonBase::BeginPlay()
 		break;
 		case EButtonState::Locked:
 			StartProgress = 0.f;
-			LockButton();
+			InteractionTrigger->DisableTrigger();
 		break;
 		case EButtonState::PositionB:
 			StartProgress = 1.f;
@@ -61,7 +61,7 @@ void AButtonBase::BeginPlay()
 			if (!bPressOnce)
 			{
 				CurrentState = EButtonState::Locked;
-				LockButton();
+				InteractionTrigger->DisableTrigger();
 			}
 		break;
 	}
@@ -80,7 +80,6 @@ bool AButtonBase::LockButton()
 	if (IsCurrentState(EButtonState::Locked) || IsCurrentState(EButtonState::Transition) || IsCurrentState(EButtonState::Disabled) && bPressOnce) return false;
 	
 	ChangeState(EButtonState::Locked);
-	InteractionTrigger->DisableTrigger();
 	return true;
 }
 
@@ -89,7 +88,6 @@ bool AButtonBase::UnlockButton()
 	if (!IsCurrentState(EButtonState::Locked)) return false;
 
 	ChangeState(PreviousState);
-	InteractionTrigger->EnableTrigger();
 	return true;
 }
 
@@ -98,7 +96,6 @@ bool AButtonBase::DisableButton()
 	if (IsCurrentState(EButtonState::Disabled) || IsCurrentState(EButtonState::Transition)) return false;
 
 	ChangeState(EButtonState::Disabled);
-	InteractionTrigger->DisableTrigger();
 	return true;
 }
 
@@ -117,6 +114,17 @@ void AButtonBase::ChangeState(const EButtonState NewState)
 
 	PreviousState = CurrentState;
 	CurrentState = NewState;
+
+	switch (NewState)
+	{
+		case EButtonState::PositionA:
+		case EButtonState::PositionB:
+			InteractionTrigger->EnableTrigger();
+		break;
+		default:
+			InteractionTrigger->DisableTrigger();
+		break;
+	}
 	OnChangeState.Broadcast(CurrentState, PreviousState);
 	OnStateChanged(CurrentState);
 }
