@@ -54,6 +54,8 @@ public:
 	bool IsCurrentState(const EZoneState State) const { return CurrentState == State; }
 	UFUNCTION(BlueprintImplementableEvent, Category="EnergyZone")
 	void OnStateChanged(const EZoneState NewState);
+	UPROPERTY(BlueprintAssignable, Category="EnergyZone")
+	FOnZoneChangeStateSignature OnChangeState;
 
 private:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="EnergyZone", meta=(AllowPrivateAccess="true"))
@@ -62,8 +64,6 @@ private:
 	EZoneState CurrentState = EZoneState::Inactive;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="EnergyZone", meta=(AllowPrivateAccess="true"))
 	EZoneState TargetState = EZoneState::Inactive;
-	UPROPERTY(BlueprintAssignable, Category="EnergyZone")
-	FOnZoneChangeStateSignature OnChangeState;
 	void ChangeState(const EZoneState NewState);
 
 	// Animation
