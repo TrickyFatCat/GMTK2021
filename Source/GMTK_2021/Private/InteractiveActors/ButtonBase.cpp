@@ -48,7 +48,7 @@ void AButtonBase::BeginPlay()
 		break;
 		case EButtonState::Locked:
 			StartProgress = 0.f;
-			LockButton();
+			InteractionTrigger->DisableTrigger();
 		break;
 		case EButtonState::PositionB:
 			StartProgress = 1.f;
@@ -61,7 +61,7 @@ void AButtonBase::BeginPlay()
 			if (!bPressOnce)
 			{
 				CurrentState = EButtonState::Locked;
-				LockButton();
+				InteractionTrigger->DisableTrigger();
 			}
 		break;
 	}
