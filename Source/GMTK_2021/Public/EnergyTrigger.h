@@ -18,6 +18,8 @@ class GMTK_2021_API UEnergyTrigger : public USphereComponent
 protected:
 	virtual void BeginPlay() override;
 public:
+	UPROPERTY(VisibleAnywhere);
+	bool bIsIncreasingEnergy = true;
 	UFUNCTION(BlueprintPure, Category="Energy")
 	bool GetIsIncreasingEnergy() const { return bIsIncreasingEnergy; }
 	UFUNCTION(BlueprintCallable, Category="Energy")
@@ -30,8 +32,6 @@ public:
 	FOnChangeStateSignature OnChangeState;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Energy", meta=(AllowPrivateAccess="true"))
-	bool bIsIncreasingEnergy = true;
 	bool bIsEnabled = true;
 	UFUNCTION()
 	void OnEnterTrigger(
