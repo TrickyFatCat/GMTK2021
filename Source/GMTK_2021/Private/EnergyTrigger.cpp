@@ -38,11 +38,17 @@ void UEnergyTrigger::OnEnterTrigger(UPrimitiveComponent* OverlappedComponent,
                                     bool bFromSweep,
                                     const FHitResult& SweepResult)
 {
-	if (!IsValid(OtherActor) || !bIsIncreasingEnergy) return;
+	if (!IsValid(OtherActor)) return;
 
 	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
 
 	if (!PlayerCharacter) return;
+
+	if (!bIsIncreasingEnergy)
+	{
+		PlayerCharacter->StopEnergyDecrease();
+		return;
+	}
 	
 	PlayerCharacter->StartEnergyIncrease();
 }

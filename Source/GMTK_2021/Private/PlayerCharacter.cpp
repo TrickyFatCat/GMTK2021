@@ -144,7 +144,7 @@ void APlayerCharacter::StartInteraction()
 		                              ? GroundInteractionMontage
 		                              : StandInteractionMontage;
 
-	if (TargetActor->IsA(ABatteryStation::StaticClass()) && Cast<ABatteryStation>(TargetActor)->IsInactive() && !BatteryManager->GetIsBatteryEquipped()) return;
+	if (!InteractionManager->CanInteract()) return;
 
 	if (!TargetMontage) return;
 

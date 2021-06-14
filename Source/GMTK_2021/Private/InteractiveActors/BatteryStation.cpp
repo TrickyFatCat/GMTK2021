@@ -11,8 +11,10 @@
 ABatteryStation::ABatteryStation()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	
 	TriggerSphere = CreateDefaultSubobject<UInteractionTrigger>("TriggerSphere");
 	SetRootComponent(TriggerSphere);
+	
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletalMesh");
 	SkeletalMesh->SetupAttachment(GetRootComponent());
 }
@@ -32,6 +34,9 @@ void ABatteryStation::BeginPlay()
 	{
 		TriggerSphere->DisableTrigger();
 	}
+
+	OnChangedState(CurrentState);
+	SpawnEnergyZone();
 }
 
 void ABatteryStation::Tick(float DeltaTime)
@@ -47,27 +52,23 @@ bool ABatteryStation::ProcessInteraction_Implementation(APlayerCharacter* Player
 	{
 	case EStationState::Inactive:
 		PlayerCharacter->UnequipBattery(SkeletalMesh);
-		CurrentState = EStationState::Active;
 
 		if (ActivationSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, ActivationSound, GetActorLocation());
 		}
 
-		OnChangedState(CurrentState);
-		OnStateChanged.Broadcast(CurrentState);
+		EnergyZone->ActivateZone();
 		break;
 	case EStationState::Active:
 		PlayerCharacter->EquipBattery();
-		CurrentState = EStationState::Inactive;
 
 		if (DeactivationSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(this, DeactivationSound, GetActorLocation());
 		}
 
-		OnChangedState(CurrentState);
-		OnStateChanged.Broadcast(CurrentState);
+		EnergyZone->DeactivateZone();
 		break;
 	}
 
@@ -94,4 +95,41 @@ bool ABatteryStation::EnableStation()
 	OnChangedState(CurrentState);
 	OnStateChanged.Broadcast(CurrentState);
 	return true;
+}
+
+void ABatteryStation::ChangeState(const EZoneState NewZoneState)
+{
+	if (CurrentState == EStationState::Disabled) return;
+	UE_LOG(LogTemp, Error, TEXT("Here am i"));
+	switch (NewZoneState)
+	{
+		case EZoneState::Active:
+			TriggerSphere->EnableTrigger();
+			CurrentState = EStationState::Active;
+		break;
+		case EZoneState::Inactive:
+			TriggerSphere->EnableTrigger();
+			CurrentState = EStationState::Inactive;
+		break;
+		case EZoneState::Transition:
+			TriggerSphere->DisableTrigger();
+			CurrentState = EStationState::Transition;
+		break;
+	}
+
+	OnChangedState(CurrentState);
+	OnStateChanged.Broadcast(CurrentState);
+}
+
+void ABatteryStation::SpawnEnergyZone()
+{
+	if (!GetWorld()) return;
+
+	EnergyZone = GetWorld()->SpawnActor<AEnergyZone>(EnergyZoneClass);
+
+	if (!EnergyZone) return;
+
+	EnergyZone->SetOwner(this);
+	EnergyZone->AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	EnergyZone->OnChangeState.AddDynamic(this, &ABatteryStation::ChangeState);
 }

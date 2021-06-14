@@ -44,24 +44,29 @@ void ADoor::BeginPlay()
 		}
 	}
 
-	ChangeState(InitialState);
+	CurrentState = InitialState;
 	PreviousState = InitialState;
 	float StartProgress = 0.f;
 
 	switch (CurrentState)
 	{
 		case EDoorState::Closed:
+			StartProgress = 0.f;
+		break;
 		case EDoorState::Locked:
 			StartProgress = 0.f;
+			LockDoor();
 		break;
 		case EDoorState::Opened:
 			StartProgress = 1.f;
 		break;
 		case EDoorState::Transition:
-			FinishTransition();
+			CurrentState = EDoorState::Closed;
+			StartProgress = 1.f;
 		break;
 	}
 	SetDoorTransform(StartProgress);
+	OnStateChanged(CurrentState);
 }
 
 void ADoor::Tick(float DeltaTime)
