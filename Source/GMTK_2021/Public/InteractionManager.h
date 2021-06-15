@@ -23,7 +23,10 @@ public:
 	void RemoveFromQueue(AActor* InteractiveActor);
 	bool Interact();
 	bool IsQueueEmpty() const { return InteractionQueue.Num() <= 0; }
+	UFUNCTION(BlueprintPure, Category="Interaction")
 	AActor* GetTargetActor() const;
+	UFUNCTION(BlueprintPure, Category="Interaction")
+	bool CanInteract() const;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="Interaction")

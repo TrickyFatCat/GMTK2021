@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "EnergyZone.h"
 #include "Interact.h"
 #include "GameFramework/Actor.h"
 #include "Sound/SoundCue.h"
@@ -17,6 +19,7 @@ enum class EStationState : uint8
 {
 	Active,
 	Inactive,
+	Transition,
 	Disabled
 };
 
@@ -48,6 +51,8 @@ private:
 
 	// States
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Battery")
+	TSubclassOf<AEnergyZone> EnergyZoneClass = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Battery")
 	EStationState InitialState = EStationState::Inactive;
 	UFUNCTION(BlueprintPure, Category="Battery")
@@ -63,8 +68,13 @@ public:
 	bool EnableStation();
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY()
+	AEnergyZone* EnergyZone = nullptr;
+	UPROPERTY(VisibleAnywhere, Category="Battery")
 	EStationState CurrentState = EStationState::Inactive;
+	UFUNCTION()
+	void ChangeState(const EZoneState NewZoneState);
+	void SpawnEnergyZone();
 
 	// Sounds
 protected:

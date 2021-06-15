@@ -31,6 +31,33 @@ float UPlayerHUDWidget::GetIsPlayerAlive() const
 	return GetNormalizedEnergy() > 0.f;
 }
 
+bool UPlayerHUDWidget::GetCanPlayerInteract() const
+{
+	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+
+	if (!PlayerCharacter) return false;
+
+	return PlayerCharacter->CanInteract();
+}
+
+AActor* UPlayerHUDWidget::GetPlayerTargetActor() const
+{
+	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+
+	if (!PlayerCharacter) return nullptr;
+
+	return PlayerCharacter->GetTargetActor();
+}
+
+bool UPlayerHUDWidget::GetIsBatteryEquipped() const
+{
+	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(GetOwningPlayerPawn());
+
+	if (!PlayerCharacter) return false;
+
+	return PlayerCharacter->IsBatteryEquipped();
+}
+
 void UPlayerHUDWidget::OnEnergyChanged(const float Energy, const float DeltaEnergy)
 {
 	if (DeltaEnergy < 0)
@@ -39,6 +66,6 @@ void UPlayerHUDWidget::OnEnergyChanged(const float Energy, const float DeltaEner
 	}
 	else
 	{
-		OnEnergyDecrease();
+		OnEnergyIncrease();
 	}
 }

@@ -78,6 +78,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	ABattery* GetBattery() const { return BatteryManager->GetBatteryActor(); }
 
+	UFUNCTION(BlueprintPure, Category="Battery")
+	bool IsBatteryEquipped() const { return BatteryManager->GetIsBatteryEquipped(); }
+
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	void UnequipBattery(USkeletalMeshComponent* TargetMesh) { BatteryManager->UnequipBattery(TargetMesh); }
 
@@ -93,6 +96,10 @@ private:
 public:
 	void AddToInteractionQueue(AActor* Actor) { InteractionManager->AddToQueue(Actor); }
 	void RemoveFromInteractionQueue(AActor* Actor) { InteractionManager->RemoveFromQueue(Actor); }
+	UFUNCTION(BlueprintPure, Category="Interaction")
+	bool CanInteract() const { return InputEnabled() && InteractionManager->CanInteract(); }
+	UFUNCTION(BlueprintPure, Category="Interaction")
+	AActor* GetTargetActor() const { return InteractionManager->GetTargetActor(); }
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UInteractionManager* InteractionManager = nullptr;

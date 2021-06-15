@@ -26,5 +26,11 @@ protected:
 	float GetNormalizedEnergy() const;
 	UFUNCTION(BlueprintPure, Category="UserInterface")
 	float GetIsPlayerAlive() const;
+	UFUNCTION(BlueprintCallable, Category="UserInterface")
+	bool GetCanPlayerInteract() const;
+	UFUNCTION(BlueprintCallable, Category="UserInterface")
+	AActor* GetPlayerTargetActor() const;
+	UFUNCTION(BlueprintCallable, Category="UserInterface")
+	bool GetIsBatteryEquipped() const;
 	void OnEnergyChanged(const float Energy, const float DeltaEnergy);
 };

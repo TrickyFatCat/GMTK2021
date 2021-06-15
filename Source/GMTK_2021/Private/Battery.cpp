@@ -7,17 +7,10 @@
 
 ABattery::ABattery()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	EnergyTrigger = CreateDefaultSubobject<UEnergyTrigger>("EnergyTrigger");
-	SetRootComponent(EnergyTrigger);
-	EnergyTrigger->DisableTrigger();
-	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	Mesh->SetupAttachment(GetRootComponent());
-
-	ZoneMesh = CreateDefaultSubobject<UStaticMeshComponent>("ZoneMesh");
-	ZoneMesh->SetupAttachment(GetRootComponent());
+	SetRootComponent(Mesh);
 }
 
 void ABattery::BeginPlay()
@@ -28,17 +21,4 @@ void ABattery::BeginPlay()
 void ABattery::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ABattery::EnableEnergyTrigger()
-{
-	EnergyTrigger->EnableTrigger();
-	OnTriggerChangedState(true);
-	ZoneMesh->SetHiddenInGame(false);
-}
-
-void ABattery::DisableEnergyTrigger()
-{
-	EnergyTrigger->DisableTrigger();
-	OnTriggerChangedState(false);
 }

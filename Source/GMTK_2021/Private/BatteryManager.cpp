@@ -149,7 +149,6 @@ void UBatteryManager::EquipBattery()
 {
 	bIsBatteryEquipped = true;
 	AttachBatteryToSocket(Cast<ACharacter>(GetOwner())->GetMesh(), BatterySocketName);
-	BatteryActor->DisableEnergyTrigger();
 	StartEnergyIncrease();
 }
 
@@ -158,7 +157,6 @@ void UBatteryManager::UnequipBattery(USkeletalMeshComponent* SkeletalMesh)
 	if (!bIsBatteryEquipped) return;
 	bIsBatteryEquipped = false;
 	AttachBatteryToSocket(SkeletalMesh, BatterySocketName);
-	BatteryActor->EnableEnergyTrigger();
 }
 
 void UBatteryManager::AttachBatteryToSocket(USkeletalMeshComponent* SkeletalMesh, const FName SocketName)
