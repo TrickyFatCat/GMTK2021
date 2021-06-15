@@ -53,6 +53,10 @@ void APlayerCharacter::BeginPlay()
 	{
 		InitAnimations();
 	}
+
+	BatteryManager->OnEnergyStartIncreasing.AddUObject(this, &APlayerCharacter::OnEnergyStartIncreasing);
+	BatteryManager->OnEnergyStopIncreasing.AddUObject(this, &APlayerCharacter::OnEnergyStopIncreasing);
+	BatteryManager->OnEnergyChanged.AddUObject(this, &APlayerCharacter::OnEnergyChanged);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
