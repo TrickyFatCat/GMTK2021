@@ -10,6 +10,8 @@ class ABattery;
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnEnergyChangedSignature, float, float)
 DECLARE_MULTICAST_DELEGATE(FOnDeathSignature)
+DECLARE_MULTICAST_DELEGATE(FOnEnergyStartIncreasingSignature)
+DECLARE_MULTICAST_DELEGATE(FOnEnergyStopIncreasingSignature)
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTK_2021_API UBatteryManager : public UActorComponent
@@ -39,6 +41,8 @@ public:
 	bool StopEnergyIncrease();
 	FOnEnergyChangedSignature OnEnergyChanged;
 	FOnDeathSignature OnDeath;
+	FOnEnergyStartIncreasingSignature OnEnergyStartIncreasing;
+	FOnEnergyStopIncreasingSignature OnEnergyStopIncreasing;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category="Energy")

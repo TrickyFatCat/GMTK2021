@@ -87,6 +87,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Battery")
 	void EquipBattery() const { BatteryManager->EquipBattery(); }
 
+	UFUNCTION(BlueprintImplementableEvent, Category="Battery")
+	void OnEnergyStartIncreasing();
+
+	UFUNCTION(BlueprintImplementableEvent, Category="Battery")
+	void OnEnergyStopIncreasing();
+	
+	UFUNCTION(BlueprintImplementableEvent, Category="Battery")
+	void OnEnergyChanged(const float Energy, const float DeltaEnergy);
+
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Components", meta=(AllowPrivateAccess="true"))
 	UBatteryManager* BatteryManager = nullptr;

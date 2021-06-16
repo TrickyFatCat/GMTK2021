@@ -112,6 +112,7 @@ bool UBatteryManager::StartEnergyIncrease()
 	FTimerDelegate IncreaseDelegate;
 	IncreaseDelegate.BindUFunction(this, FName("IncreaseEnergy"), IncreaseAmount);
 	TimerManager.SetTimer(EnergyIncreaseHandle, IncreaseDelegate, IncreaseInterval, true);
+	OnEnergyStartIncreasing.Broadcast();
 	return true;
 }
 
@@ -124,6 +125,7 @@ bool UBatteryManager::StopEnergyIncrease()
 	if (!TimerManager.IsTimerActive(EnergyIncreaseHandle)) return false;
 
 	TimerManager.ClearTimer(EnergyIncreaseHandle);
+	OnEnergyStopIncreasing.Broadcast();
 	return true;
 }
 
