@@ -6,7 +6,7 @@
 
 #include "Door.h"
 #include "Interact.h"
-#include "InteractionTrigger.h"
+#include "Triggers/InteractionTrigger.h"
 #include "GameFramework/Actor.h"
 #include "ButtonBase.generated.h"
 

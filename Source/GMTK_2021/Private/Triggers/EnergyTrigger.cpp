@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EnergyTrigger.h"
-#include "PlayerCharacter.h"
+#include "Triggers/EnergyTrigger.h"
+#include "Actors/PlayerCharacter.h"
 
 void UEnergyTrigger::BeginPlay()
 {

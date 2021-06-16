@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "InteractionManager.h"
+#include "Components/InteractionManager.h"
 #include "Interact.h"
-#include "PlayerCharacter.h"
+#include "Actors/PlayerCharacter.h"
 #include "InteractiveActors/BatteryStation.h"
 
 

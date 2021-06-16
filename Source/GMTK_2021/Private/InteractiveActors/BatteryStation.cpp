@@ -2,8 +2,8 @@
 
 
 #include "InteractiveActors/BatteryStation.h"
-#include "PlayerCharacter.h"
-#include "InteractionTrigger.h"
+#include "Actors/PlayerCharacter.h"
+#include "Triggers/InteractionTrigger.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 
