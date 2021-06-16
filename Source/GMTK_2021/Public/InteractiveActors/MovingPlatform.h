@@ -16,6 +16,8 @@ enum class EPlatformState : uint8
 	Idle
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlatformStopMovingSignature);
+
 UCLASS()
 class GMTK_2021_API AMovingPlatform : public AActor
 {
@@ -42,6 +44,8 @@ public:
 	TSet<AActor*> TargetPoints;
 	UFUNCTION(BlueprintCallable, Category="Platform")
 	bool StartMoving();
+	UPROPERTY(BlueprintAssignable, Category="Platform")
+	FOnPlatformStopMovingSignature OnPlatformStopMoving;
 
 private:
 	FVector InitialLocation;
