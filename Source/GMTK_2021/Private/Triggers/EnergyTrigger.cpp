@@ -18,7 +18,6 @@ void UEnergyTrigger::EnableTrigger()
 	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 	bIsEnabled = true;
 	OnChangeState.Broadcast(bIsEnabled);
-	// SetHiddenInGame(false);
 }
 
 void UEnergyTrigger::DisableTrigger()
@@ -28,7 +27,6 @@ void UEnergyTrigger::DisableTrigger()
 	SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	bIsEnabled = false;
 	OnChangeState.Broadcast(bIsEnabled);
-	// SetHiddenInGame(true);
 }
 
 void UEnergyTrigger::OnEnterTrigger(UPrimitiveComponent* OverlappedComponent,
@@ -42,7 +40,7 @@ void UEnergyTrigger::OnEnterTrigger(UPrimitiveComponent* OverlappedComponent,
 
 	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
 
-	if (!PlayerCharacter) return;
+	if (!PlayerCharacter || PlayerCharacter->IsDead()) return;
 
 	if (!bIsIncreasingEnergy)
 	{
@@ -62,7 +60,7 @@ void UEnergyTrigger::OnExitTrigger(UPrimitiveComponent* OverlappedComponent,
 
 	const APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor);
 
-	if (!PlayerCharacter) return;
-
+	if (!PlayerCharacter || PlayerCharacter->IsDead()) return;
+	
 	PlayerCharacter->StartEnergyDecrease();
 }
