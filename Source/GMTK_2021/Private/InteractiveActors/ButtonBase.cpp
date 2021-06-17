@@ -77,7 +77,7 @@ void AButtonBase::Tick(float DeltaTime)
 
 bool AButtonBase::LockButton()
 {
-	if (IsCurrentState(EButtonState::Locked) || IsCurrentState(EButtonState::Transition) || IsCurrentState(EButtonState::Disabled) && bPressOnce) return false;
+	if (IsCurrentState(EButtonState::Locked) || IsCurrentState(EButtonState::Transition) || (IsCurrentState(EButtonState::Disabled) && bPressOnce)) return false;
 	
 	ChangeState(EButtonState::Locked);
 	return true;
