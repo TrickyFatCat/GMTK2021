@@ -74,5 +74,6 @@ void AMovingPlatform::SetPlatformLocation(const float PathProgress)
 
 void AMovingPlatform::FinishMovement()
 {
-	CurrentPointIndex++;
+	CurrentPointIndex = CurrentPointIndex == 0 ? 1 : 0;
+	OnPlatformStopMoving.Broadcast();
 }

@@ -19,7 +19,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintCallable, Category="Interaction Trigger")
 	void EnableTrigger();
+	UFUNCTION(BlueprintCallable, Category="Interaction Trigger")
 	void DisableTrigger();
 
 private:

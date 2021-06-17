@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "EnergyTrigger.h"
+#include "Triggers/EnergyTrigger.h"
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
 #include "EnergyZone.generated.h"

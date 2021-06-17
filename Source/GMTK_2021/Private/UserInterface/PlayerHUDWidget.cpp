@@ -2,7 +2,7 @@
 
 
 #include "UserInterface/PlayerHUDWidget.h"
-#include "PlayerCharacter.h"
+#include "Actors/PlayerCharacter.h"
 #include "GMTK_2021/Public/Utils.h"
 
 bool UPlayerHUDWidget::Initialize()
