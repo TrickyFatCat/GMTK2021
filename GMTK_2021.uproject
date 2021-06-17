@@ -13,5 +13,10 @@
 				"UMG"
 			]
 		}
+	],
+	"TargetPlatforms": [
+		"AllDesktop",
+		"LinuxNoEditor",
+		"WindowsNoEditor"
 	]
 }
