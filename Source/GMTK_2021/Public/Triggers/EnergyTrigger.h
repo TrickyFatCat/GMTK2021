@@ -10,7 +10,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangeStateSignature, bool, IsEna
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GMTK_2021_API UEnergyTrigger : public USphereComponent
 {
 	GENERATED_BODY()
@@ -18,7 +18,7 @@ class GMTK_2021_API UEnergyTrigger : public USphereComponent
 protected:
 	virtual void BeginPlay() override;
 public:
-	UPROPERTY(VisibleAnywhere);
+	UPROPERTY(EditAnywhere);
 	bool bIsIncreasingEnergy = true;
 	UFUNCTION(BlueprintPure, Category="Energy")
 	bool GetIsIncreasingEnergy() const { return bIsIncreasingEnergy; }
