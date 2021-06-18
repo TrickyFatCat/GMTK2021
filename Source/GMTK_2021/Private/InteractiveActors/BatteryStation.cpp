@@ -100,7 +100,6 @@ bool ABatteryStation::EnableStation()
 void ABatteryStation::ChangeState(const EZoneState NewZoneState)
 {
 	if (CurrentState == EStationState::Disabled) return;
-	UE_LOG(LogTemp, Error, TEXT("Here am i"));
 	switch (NewZoneState)
 	{
 		case EZoneState::Active:
